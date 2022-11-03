@@ -1,1 +1,1 @@
-module "github.com/africhild/dapper"
+module "github.com/africhild/drapper"
