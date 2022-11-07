@@ -1,4 +1,4 @@
-package main
+package drapper
 
 import (
 	"bytes"
@@ -9,34 +9,37 @@ import (
 	"log"
 	"path"
 )
-func main() {
+//func main() {
+//	if schema.InitError != nil {
+//		log.Fatal(schema.InitError)
+//	}
+//	sample := map[string]interface{}{
+//			"id": "3232-4434333-er44333-re332222",
+//			"amount": 200.0,
+//			"type": "dr",
+//			"date": "2021-01-01T00:00:00Z",
+//			"status": "pending",
+//			"transaction_reference": "1234567890",
+//		    "user": map[string]interface{}{
+//				"id": "1234-1234-1234-1234",
+//				"first_name": "John",
+//				"last_name": "Doe",
+//				"phone_number": "+233 50 123 4567",
+//				"email": "johndoe@gmail.com",
+//			},
+//			"products": []string{
+//				"MacBook Pro",
+//				"iPhone 12",
+//				"Apple Watch",
+//			},
+//	}
+//	validate(sample)
+//}
+
+func Validate(obj interface{}) {
 	if schema.InitError != nil {
 		log.Fatal(schema.InitError)
 	}
-	sample := map[string]interface{}{
-			"id": "3232-4434333-er44333-re332222",
-			"amount": 200.0,
-			"type": "dr",
-			"date": "2021-01-01T00:00:00Z",
-			"status": "pending",
-			"transaction_reference": "1234567890",
-		    "user": map[string]interface{}{
-				"id": "1234-1234-1234-1234",
-				"first_name": "John",
-				"last_name": "Doe",
-				"phone_number": "+233 50 123 4567",
-				"email": "johndoe@gmail.com",
-			},
-			"products": []string{
-				"MacBook Pro",
-				"iPhone 12",
-				"Apple Watch",
-			},
-	}
-	validate(sample)
-}
-
-func validate(obj interface{}) {
 
 	//jsonContent, err := ioutil.ReadFile("document.json")
 	//schema, err := os.ReadFile(filepath.Clean("./schema/receipt-01.json"))
