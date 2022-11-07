@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Transaction.schema.json",
+  "title": "Transaction",
+  "description": "A Transaction from Aella customer",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a transaction",
+      "type": "string"
+    },
+    "amount": {
+      "description": "The amount of the transaction",
+      "type": "number"
+    },
+    "transaction_reference": {
+      "description": "The transaction reference",
+      "type": "string"
+    },
+    "date": {
+      "description": "The date of the transaction",
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of the transaction",
+      "type": "string"
+    },
+    "status": {
+      "description": "The status of the transaction",
+      "type": "string"
+    },
+    "user": {
+      "description": "The user who made the transaction",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The unique identifier for a user",
+          "type": "string"
+        },
+        "first_name": {
+          "description": "The first name of the user",
+          "type": "string"
+        },
+        "last_name": {
+          "description": "The last name of the user",
+          "type": "string"
+        },
+        "email": {
+          "description": "The email of the user",
+          "type": "string"
+        },
+        "phone_number": {
+          "description": "The phone number of the user",
+          "type": "string"
+        },
+        "address": {
+          "description": "The address of the user",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "first_name",
+        "last_name",
+        "email",
+        "phone_number"
+      ]
+    },
+    "products": {
+      "description": "product purchased by the customer",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "id",
+    "amount",
+    "date",
+    "type",
+    "status",
+    "transaction_reference",
+    "user",
+    "products"
+  ]
+}
