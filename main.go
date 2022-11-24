@@ -41,17 +41,17 @@ func Validate(obj map[string]interface{}, tmpt string) error {
 	return nil
 }
 
-func Convert(obj map[string]interface{}, tmpt string, flag bool) ([]byte, error) {
+func Convert(obj map[string]interface{}, tmpt string, flag bool) (string, error) {
 	if flag {
 		err := Validate(obj, tmpt)
 		if err != nil {
 			log.Fatal(err)
-			return nil, err
+			return "", err
 		}
 	}
 
 	c := config.Config{
-		Root:    "../drapper",
+		Root:    "github.com/africhild/drapper",
 		FileDir: "template",
 	}
 	// t := template.Must(template.ParseFiles("../drapper/test.html"))
@@ -61,7 +61,7 @@ func Convert(obj map[string]interface{}, tmpt string, flag bool) ([]byte, error)
 	err := t.Execute(&buf, obj)
 	if err != nil {
 		log.Printf("--- %s\n", err)
-		return nil, err
+		return "", err
 	}
-	return buf.Bytes(), nil
+	return buf.String(), nil
 }
