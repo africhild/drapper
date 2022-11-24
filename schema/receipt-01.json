@@ -84,6 +84,6 @@
     "status",
     "transaction_reference",
     "user",
-    "products"
+    "products",
   ]
 }

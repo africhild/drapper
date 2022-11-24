@@ -3,82 +3,65 @@ package drapper
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/africhild/drapper/schema"
-	"github.com/xeipuuv/gojsonschema"
+	"errors"
 	"html/template"
 	"log"
-	"path"
+
+	"github.com/africhild/drapper/config"
+	"github.com/africhild/drapper/schema"
+	"github.com/xeipuuv/gojsonschema"
 )
-//func main() {
-//	if schema.InitError != nil {
-//		log.Fatal(schema.InitError)
-//	}
-//	sample := map[string]interface{}{
-//			"id": "3232-4434333-er44333-re332222",
-//			"amount": 200.0,
-//			"type": "dr",
-//			"date": "2021-01-01T00:00:00Z",
-//			"status": "pending",
-//			"transaction_reference": "1234567890",
-//		    "user": map[string]interface{}{
-//				"id": "1234-1234-1234-1234",
-//				"first_name": "John",
-//				"last_name": "Doe",
-//				"phone_number": "+233 50 123 4567",
-//				"email": "johndoe@gmail.com",
-//			},
-//			"products": []string{
-//				"MacBook Pro",
-//				"iPhone 12",
-//				"Apple Watch",
-//			},
-//	}
-//	validate(sample)
-//}
 
-func Validate(obj interface{}) {
-	if schema.InitError != nil {
-		log.Fatal(schema.InitError)
-	}
-
-	//jsonContent, err := ioutil.ReadFile("document.json")
-	//schema, err := os.ReadFile(filepath.Clean("./schema/receipt-01.json"))
-	//if err != nil {
-	//	log.Fatalf("Could not read schema file: '%s' cleanly.", schema)
-	//}
-	//loadedSchema := gojsonschema.NewBytesLoader(schema)
-
-	//schemaLoader := gojsonschema.NewReferenceLoader(schemaLocation[schemaVersion])
-	data, err := json.Marshal(obj); if err != nil {
+func Validate(obj map[string]interface{}, tmpt string) error {
+	data, err := json.Marshal(obj)
+	if err != nil {
 		log.Fatalf("Could not marshal obj: '%v'", obj)
+		return err
 	}
 	documentLoader := gojsonschema.NewBytesLoader(data)
-	// Validate the JSON data against the loaded JSON Schema
-	result, err := schema.TransactionSchema.Validate(documentLoader)
+	transactionSchema, err := schema.InitTransaction(tmpt)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	result, err := transactionSchema.Validate(documentLoader)
 	if err != nil {
 		log.Printf("There was a problem validating %s", obj)
-		log.Fatalf(err.Error())
-
+		return err
 	}
-	// Check the validity of the result and throw a message if the document is valid or if it's not with errors.
-	if result.Valid() {
-		layout := path.Join("templates", "layout.html")
-		body := path.Join("templates", "receipt-01.html")
-		t := template.Must(template.ParseFiles(layout, body))
-		var content bytes.Buffer
 
-		err := t.Execute(&content, data)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("The document is valid. %s", content.String())
-	} else {
+	if !result.Valid() {
 		log.Printf("%s is not a valid document...\n", obj)
 		for _, desc := range result.Errors() {
 			log.Printf("--- %s\n", desc)
 		}
 		log.Fatalf("Exiting...")
-		//return errors.New("document not valid")
+		return errors.New("document not valid")
 	}
+	return nil
 }
 
+func Convert(obj map[string]interface{}, tmpt string, flag bool) ([]byte, error) {
+	if flag {
+		err := Validate(obj, tmpt)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+	}
+
+	c := config.Config{
+		Root:    "../drapper",
+		FileDir: "template",
+	}
+	// t := template.Must(template.ParseFiles("../drapper/test.html"))
+	t := template.Must(template.ParseFiles(c.GetFile(tmpt, "html")))
+
+	var buf bytes.Buffer
+	err := t.Execute(&buf, obj)
+	if err != nil {
+		log.Printf("--- %s\n", err)
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}

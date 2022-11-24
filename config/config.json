@@ -1,0 +1,22 @@
+[
+    {
+        "name": "receipt-01",
+        "schema_url": "schema/receipt-01",
+        "template_url": "template/receipt-01"
+    },
+    {
+        "name": "template2",
+        "schema_url": "schema/template2",
+        "template_url": "template/template2"
+    },
+    {
+        "name": "template3",
+        "schema_url": "schema/template3",
+        "template_url": "template/template3"
+    },
+    {
+        "name": "template4",
+        "schema_url": "schema/template4",
+        "template_url": "template/template4"
+    }
+]
