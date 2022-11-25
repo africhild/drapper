@@ -24,17 +24,17 @@ func (c *Config) GetFileDir() string {
 	}
 
 	// if the file directory is relative, make it absolute
-	if !filepath.IsAbs(fileDir) {
-		// get the current working directory
-		cwd, err := os.Getwd()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+	// if !filepath.IsAbs(fileDir) {
+	// 	// get the current working directory
+	// 	// cwd, err := os.Getwd()
+	// 	// if err != nil {
+	// 	// 	fmt.Println(err)
+	// 	// 	os.Exit(1)
+	// 	// }
 
-		// make the file directory absolute
-		fileDir = filepath.Join(cwd, fileDir)
-	}
+	// 	// make the file directory absolute
+	// 	// fileDir = filepath.Join(cwd, fileDir)
+	// }
 
 	// if the file directory is a symlink, resolve it
 	fileDir, err := filepath.EvalSymlinks(fileDir)

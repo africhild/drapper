@@ -31,7 +31,7 @@ func InitTransaction(temp string) (*gojsonschema.Schema, error) {
 	// 	fmt.Println(file.Name(), file.IsDir())
 	// }
 	c := config.Config{
-		Root:    "../drapper",
+		Root:    "github.com/africhild/drapper",
 		FileDir: "schema",
 	}
 	content, err := os.ReadFile(path.Clean(c.GetFile(temp, "json")))

@@ -51,7 +51,7 @@ func Convert(obj map[string]interface{}, tmpt string, flag bool) (string, error)
 	}
 
 	c := config.Config{
-		Root:    "../drapper",
+		Root:    "github.com/africhild/drapper",
 		FileDir: "template",
 	}
 	// t := template.Must(template.ParseFiles("../drapper/test.html"))
